@@ -39,7 +39,7 @@ const PatientTable = ({ data ,fetchData}) => {
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.put(
-        `http://localhost:5000/patient/editPatient/${selectedId}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/editPatient/${selectedId}`,
         data,
         {
           headers: {
@@ -60,7 +60,7 @@ const PatientTable = ({ data ,fetchData}) => {
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.delete(
-        `http://localhost:5000/patient/deletePatient/${id}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/deletePatient/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Authorization header

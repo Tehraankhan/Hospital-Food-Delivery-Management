@@ -35,7 +35,7 @@ import DeliveryTable from "../../Components/DeliveryTable";
 import { io } from "socket.io-client";
 import AlertCard from "../../Components/AlertCard";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://hospital-food-delivery-management-backhttps://hospital-food-delivery-management-backend-rf3c.onrender.com");
 export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isPatientModalOpen, setPatientModalOpen] = useState(false);
@@ -62,19 +62,19 @@ export default function Dashboard() {
       let url = "";
       switch (currentTab) {
         case "Patients":
-          url = "http://localhost:5000/patient/getAllPatient";
+          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/getAllPatient";
           break;
         case "Diet Chart":
-          url = "http://localhost:5000/patient/DietChart/";
+          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/";
           break;
         case "Add Staff":
-          url = "http://localhost:5000/staff/getDetails";
+          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/staff/getDetails";
           break;
         case "Meal Preparation":
-          url = "http://localhost:5000/mealpreparation/getData";
+          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/getData";
           break;
         case "Delivery Status":
-          url = "http://localhost:5000/Delivery/getData";
+          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getData";
           break;
         default:
           break;
@@ -124,7 +124,7 @@ export default function Dashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          "http://localhost:5000/patient/add-details",
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/add-details",
           data,
           {
             headers: {
@@ -142,7 +142,7 @@ export default function Dashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          `http://localhost:5000/patient/DietChart/addDiet/${id}`,
+          `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/addDiet/${id}`,
           data,
           {
             headers: {
@@ -159,7 +159,7 @@ export default function Dashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          "http://localhost:5000/staff/add-staff",
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/staff/add-staff",
           data,
           {
             headers: {
@@ -177,7 +177,7 @@ export default function Dashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          "http://localhost:5000/mealpreparation/addMeal",
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/addMeal",
           data,
           {
             headers: {

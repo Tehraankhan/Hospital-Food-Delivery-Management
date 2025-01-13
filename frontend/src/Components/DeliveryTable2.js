@@ -50,7 +50,7 @@ const DeliveryTable2 = ({ data, editstatus }) => {
 
       // Send the updated status to the backend
       const response = await axios.put(
-        `http://localhost:5000/Delivery/ChangedMealDeliveryStatus/${mealBoxId}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/ChangedMealDeliveryStatus/${mealBoxId}`,
         { deliveryStatus : newStatus },
         {
           headers: {

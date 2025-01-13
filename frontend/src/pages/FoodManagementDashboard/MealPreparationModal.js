@@ -32,7 +32,7 @@ const MealPreparationFormModal = ({ open, onClose, onSubmit }) => {
 
         // Fetch patients data
         const response1 = await axios.get(
-          "http://localhost:5000/patient/DietChart/getPatientWithDietCharts", // Replace with your API endpoint
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/getPatientWithDietCharts", // Replace with your API endpoint
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -41,7 +41,7 @@ const MealPreparationFormModal = ({ open, onClose, onSubmit }) => {
 
         // Fetch staff data
         const response2 = await axios.get(
-          "http://localhost:5000/staff/getStaffIDAndName", // Replace with your API endpoint
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/staff/getStaffIDAndName", // Replace with your API endpoint
           {
             headers: { Authorization: `Bearer ${token}` },
           }

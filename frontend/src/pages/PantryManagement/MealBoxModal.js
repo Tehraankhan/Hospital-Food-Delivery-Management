@@ -28,7 +28,7 @@ const MealBoxModal = ({ open, onClose, onSubmit }) => {
 
         // Fetch completed meals and populate the patient and delivery personnel data
         const response1 = await axios.get(
-          "http://localhost:5000/Delivery/getCompletedMealsDetails",
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getCompletedMealsDetails",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -37,7 +37,7 @@ const MealBoxModal = ({ open, onClose, onSubmit }) => {
         setPatients(response1.data); // Set patients data
 
         const response2 = await axios.get(
-          "http://localhost:5000/Delivery/getDeliveryPersonnelIds",
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getDeliveryPersonnelIds",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

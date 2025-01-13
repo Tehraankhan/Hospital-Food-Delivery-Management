@@ -50,7 +50,7 @@ const MealPreparationTable = ({ data, editstatus }) => {
 
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/mealpreparation/changedStatus/${id}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/changedStatus/${id}`,
         { status: newStatus },
         {
           headers: {

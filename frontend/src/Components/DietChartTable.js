@@ -27,7 +27,7 @@ const DietChartTable = ({ dietCharts,fetchData }) => {
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.put(
-        `http://localhost:5000/patient/DietChart/updateDiertChart/${selectedId}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/updateDiertChart/${selectedId}`,
         data,
         {
           headers: {
@@ -47,7 +47,7 @@ const DietChartTable = ({ dietCharts,fetchData }) => {
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.delete(
-        `http://localhost:5000/patient/DietChart/deleteDietChart/${id}`,
+        `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/deleteDietChart/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Authorization header

@@ -45,7 +45,7 @@ const DietChartFormModal = ({ open, onClose, onSubmit, dietChartData}) => {
     const fetchPatients = async () => {
       try {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-        const response = await axios.get("http://localhost:5000/patient/getPatientID", {
+        const response = await axios.get("https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/getPatientID", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
