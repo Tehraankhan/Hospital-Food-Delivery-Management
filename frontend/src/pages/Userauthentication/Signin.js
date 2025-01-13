@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { TextField, Button, Container, Typography, Box, CircularProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Use navigate to handle redirection
+  const [loading, setLoading] = useState(false); // State for loading
+  const navigate = useNavigate();
 
   const Input = (e) => {
     if (e.target.name === "email") {
@@ -19,6 +20,7 @@ export default function Signin() {
   const url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com";
 
   const fetchData = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.post(
         `${url}/user/signin`,
@@ -41,6 +43,8 @@ export default function Signin() {
       }
     } catch (error) {
       console.error("Error:", error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -93,8 +97,9 @@ export default function Signin() {
           color="primary"
           fullWidth
           sx={{ marginTop: 2 }}
+          disabled={loading} // Disable button while loading
         >
-          Sign In
+          {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Sign In"}
         </Button>
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
           <Typography variant="body2">
