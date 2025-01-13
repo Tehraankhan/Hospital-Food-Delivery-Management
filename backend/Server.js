@@ -22,7 +22,7 @@ app.use(cors());
 // Enable CORS for Socket.IO
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Allow connections from the frontend
+    origin: "https://hospital-food-delivery-management-jxst.onrender.com", // Allow connections from the frontend
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true, // Allow cookies and credentials
