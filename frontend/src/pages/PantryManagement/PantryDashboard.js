@@ -32,7 +32,7 @@ import AlertCard from "../../Components/AlertCard";
 
 import { CircularProgress } from "@mui/material";
 
-const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
+const socket = io("http://localhost:5000");
 
 export default function PantryDashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -57,7 +57,7 @@ export default function PantryDashboard() {
         console.log("Token:", token); // Log token for debugging
 
         const response = await axios.post(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/addMealDelivery", // Ensure this URL is correct
+          "http://localhost:5000/Delivery/addMealDelivery", // Ensure this URL is correct
           data,
           {
             headers: {
@@ -80,7 +80,7 @@ export default function PantryDashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          `https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/addDeliveryDetails`,
+          `http://localhost:5000/Delivery/addDeliveryDetails`,
           data,
           {
             headers: {
@@ -113,7 +113,7 @@ export default function PantryDashboard() {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
         const response = await axios.post(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparartion/addMeal",
+          "http://localhost:5000/mealpreparartion/addMeal",
           data,
           {
             headers: {
@@ -131,12 +131,12 @@ export default function PantryDashboard() {
 
   useEffect(() => {
     socket.on("updatePendingDeliveries", (data) => {
-      console.log("Updated Pending Deliveries:", data.pendingDeliveries);
+      
       setPendingDeliveries(data.pendingDeliveries);
     });
 
     socket.on("updatePendingPreparations", (data) => {
-      console.log("Updated Pending Preparations:", data.pendingPreparations);
+     
       setPendingPreparations(data.pendingPreparations);
     });
 
@@ -160,7 +160,7 @@ export default function PantryDashboard() {
 
       if (currentTab === "Changed Delivery Status") {
         response = await axios.get(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getalltheDetails",
+          "http://localhost:5000/Delivery/getalltheDetails",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -169,7 +169,7 @@ export default function PantryDashboard() {
         );
       } else if (currentTab === "Add delivery Personnel") {
         response = await axios.get(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getAllDeliveryDetails",
+          "http://localhost:5000/Delivery/getAllDeliveryDetails",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -178,7 +178,7 @@ export default function PantryDashboard() {
         );
       } else if (currentTab === "Assign meal Box") {
         response = await axios.get(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getAllMealBoxDetails",
+          "http://localhost:5000/Delivery/getAllMealBoxDetails",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -187,7 +187,7 @@ export default function PantryDashboard() {
         );
       } else if (currentTab === "view Assign Meals") {
         response = await axios.get(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/getData",
+          "http://localhost:5000/mealpreparation/getData",
           {
             headers: {
               Authorization: `Bearer ${token}`,
