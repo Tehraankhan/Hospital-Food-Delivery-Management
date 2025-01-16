@@ -34,6 +34,7 @@ import MealPreparationTable from "../../Components/MealPreparationTable";
 import DeliveryTable from "../../Components/DeliveryTable";
 import { io } from "socket.io-client";
 import AlertCard from "../../Components/AlertCard";
+import StatusCard from "../../Components/StatusCard";
 
 const socket = io("https://hospital-food-delivery-management-backhttps://hospital-food-delivery-management-backend-rf3c.onrender.com");
 export default function Dashboard() {
@@ -242,77 +243,7 @@ export default function Dashboard() {
 
       <Box sx={{ width: "80%", margin: "auto" }}>
         {/* Cards Section */}
-        <Box
-          sx={{
-            width: "100%",
-            minHeight: "150px",
-            margin: "10px 0px",
-            display: "flex",
-            gap: "10px",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* Card 1 with Cool Blue Background */}
-          <Card
-            sx={{
-              width: "30%",
-              backgroundColor: "#f5f5f5",
-              border: "2px solid #002F31",
-            }}
-          >
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Meal Preparation Pending
-              </Typography>
-              {/* Row for Icon and Count */}
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "30px",
-                }}
-              >
-                <KitchenIcon style={{ fontSize: 40, color: "orange" }} />
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  {pendingPreparations}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
-
-          {/* Card 2: Delivery Pending */}
-          <Card
-            sx={{
-              width: "30%",
-              backgroundColor: "#f5f5f5",
-              border: "2px solid #002F31",
-            }}
-          >
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Delivery Pending
-              </Typography>
-              {/* Row for Icon and Count */}
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "30px",
-                }}
-              >
-                <DeliveryDiningIcon style={{ fontSize: 40, color: "green" }} />
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  {pendingDeliveries}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
-
-          {/* Card 3 with Cool Green Background */}
-          <AlertCard delayedMessages={delayedMessages} />
-        </Box>
+      <StatusCard/>
 
         {/* Tabs and Content Section */}
         <Grid item xs={12} sm={12} md={12} lg={6}>

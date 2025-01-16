@@ -29,6 +29,7 @@ import DeliveryTable from "../../Components/DeliveryTable2";
 import MealAssignTable from "../../Components/MealAssignTable";
 import DeliveryPersonnalTable from "../../Components/DeliveryPersonnalTable";
 import AlertCard from "../../Components/AlertCard";
+import StatusCard from "../../Components/StatusCard";
 
 import { CircularProgress } from "@mui/material";
 
@@ -241,76 +242,7 @@ export default function PantryDashboard() {
 
       <Box sx={{ width: "80%", margin: "auto" }}>
         {/* Cards Section */}
-        <Box
-          sx={{
-            width: "100%",
-            minHeight: "150px",
-            margin: "10px 0px",
-            display: "flex",
-            gap: "10px",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* Card 1 with Cool Blue Background */}
-          <Card
-            sx={{
-              width: "30%",
-              backgroundColor: "#f5f5f5",
-              border: "2px solid #002F31",
-            }}
-          >
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Meal Preparation Pending
-              </Typography>
-              {/* Row for Icon and Count */}
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "30px",
-                }}
-              >
-                <KitchenIcon style={{ fontSize: 40, color: "orange" }} />
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  {pendingPreparations}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
-
-          {/* Card 2: Delivery Pending */}
-          <Card
-            sx={{
-              width: "30%",
-              backgroundColor: "#f5f5f5",
-              border: "2px solid #002F31",
-            }}
-          >
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Delivery Pending
-              </Typography>
-              {/* Row for Icon and Count */}
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: "30px",
-                }}
-              >
-                <DeliveryDiningIcon style={{ fontSize: 40, color: "green" }} />
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  {pendingDeliveries}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
-
-          <AlertCard delayedMessages={delayedMessages} />
-        </Box>
+        <StatusCard/>
 
         <Grid item xs={12} sm={12} md={12} lg={6}>
           <Stack
