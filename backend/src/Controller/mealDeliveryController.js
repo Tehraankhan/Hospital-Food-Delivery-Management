@@ -1,20 +1,18 @@
 const mealDeliveryModal = require("../models/mealDeliverySchema");
 const mealModal = require("../models/mealSchema");
 const DeliveryPersonneModal = require("../models/DeliveryPersonnelSchema");
-const cron = require('node-cron');
-const alertMessageModal = require("../models/alertMessageSchema")
+const cron = require("node-cron");
+const alertMessageModal = require("../models/alertMessageSchema");
 
 const createmealDelivery = async (req, res) => {
   try {
-    const { patientId, deliveryPersonnelId,deliveryDeadline,_id } = req.body;
-    
+    const { patientId, deliveryPersonnelId, deliveryDeadline, _id } = req.body;
 
     if (!patientId || !deliveryPersonnelId) {
       return res.status(400).json({
         message: "Patient ID and Delivery Personnel ID are required.",
       });
     }
-
 
     const mealPreparationId = _id; // Assuming the `_id` of the mealModal is used as mealPreparationId
 
@@ -26,7 +24,7 @@ const createmealDelivery = async (req, res) => {
       deliveryStatus: "Pending",
       deliveryTimestamp: "", // Leave empty
       deliveryNotes: "", // Leave empty
-      deliveryDeadline
+      deliveryDeadline,
     });
 
     await newMealDelivery.save();
@@ -38,19 +36,15 @@ const createmealDelivery = async (req, res) => {
   }
 };
 
-const getAllDeliveryPersonnel = async (req,res) =>{
-
-    try {
-        const DeliveryPersonnal = await DeliveryPersonneModal.find()
-        res
-          .status(200)
-          .json( DeliveryPersonnal);
-      } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
-      }
-
-}
+const getAllDeliveryPersonnel = async (req, res) => {
+  try {
+    const DeliveryPersonnal = await DeliveryPersonneModal.find();
+    res.status(200).json(DeliveryPersonnal);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const getDeileveyStatus = async (req, res) => {
   try {
@@ -81,7 +75,7 @@ const getDeileveyStatus = async (req, res) => {
         preparationStatus: prep.status,
         preparedBy: prep.preparedBy?.staffName || "Not Assigned",
         deliveryStatus: delivery.deliveryStatus || "Not Assigned",
-        deliveryDeadline:delivery.deliveryDeadline,
+        deliveryDeadline: delivery.deliveryDeadline,
         deliveryTimestamp: delivery.deliveryTimestamp || "N/A",
         deliveryNotes: delivery.deliveryNotes || "N/A",
         deliveryPersonnel: delivery.deliveryPersonnelId?.name || "N/A",
@@ -195,7 +189,7 @@ const getalltheDetails = async (req, res) => {
       deliveryNotes: delivery.deliveryNotes || "N/A",
       deliveryPersonnelId: delivery.deliveryPersonnelId?._id || "N/A",
       deliveryPersonnelName: delivery.deliveryPersonnelId?.name || "N/A",
-      deliveryDeadline:delivery.deliveryDeadline,
+      deliveryDeadline: delivery.deliveryDeadline,
       dietChartId: delivery.mealPreparationId?.dietChartId || "N/A",
       mealType: delivery.mealPreparationId?.mealType || "N/A",
       status: delivery.mealPreparationId?.status || "N/A",
@@ -221,11 +215,11 @@ const getalltheDetails = async (req, res) => {
 const ChangedMealDeliveryStatus = async (req, res) => {
   try {
     const { deliveryStatus } = req.body;
-    const _id= req.params.id;
+    const _id = req.params.id;
 
     const updatedMeal = await mealDeliveryModal.findOneAndUpdate(
       { _id },
-      { deliveryStatus  },
+      { deliveryStatus },
       { new: true }
     );
 
@@ -241,49 +235,44 @@ const ChangedMealDeliveryStatus = async (req, res) => {
   }
 };
 
-const getAllMealBoxDetails = async (req,res)=>{
-
+const getAllMealBoxDetails = async (req, res) => {
   try {
     const mealDeliveryDetails = await mealDeliveryModal.find();
     res.status(201).json(mealDeliveryDetails);
   } catch (error) {
     res.status(201).json({ message: error.message });
   }
-}
-
+};
 
 const checkDelayedDelivery = async (io) => {
   try {
     const testTime = "10:00"; // Fixed time for testing
-    console.log(`Testing with time: ${testTime}`);
 
-    // Find meal preparations with deliveryDeadline as string
-    const delayedDelivery = await mealDeliveryModal.find({
-      deliveryDeadline: { $lt: testTime },
-      deli: { $ne: "deliveryStatus" },
-    }).populate("patientId"); // Populate patientId for patient details
+
+    const delayedDelivery = await mealDeliveryModal
+      .find({
+        deliveryDeadline: { $lt: testTime },
+        deli: { $ne: "deliveryStatus" },
+      })
+      .populate("patientId");
 
     for (const delivery of delayedDelivery) {
       // Check if patientId is present
       if (!delivery.patientId) {
-        continue; // Skip this delivery if patientId is not present
+        continue; 
       }
 
       const message1 = `⚠️ delivery  for patient ${delivery.patientId.name} (Deadline: ${delivery.deliveryDeadline}) is delayed. Please take immediate action!`;
-     
 
-      
-      const existingMessage = await alertMessageModal.findOne({ message: message1 });
+      const existingMessage = await alertMessageModal.findOne({
+        message: message1,
+      });
 
       if (!existingMessage) {
-      
         const message = new alertMessageModal({ message: message1 });
         await message.save();
-
-        
-       
       }
-       io.emit("mealDelayed", existingMessage);
+      io.emit("mealDelayed", existingMessage);
     }
   } catch (error) {
     console.error("Error checking delayed deliveries:", error);
@@ -300,6 +289,5 @@ module.exports = {
   getalltheDetails,
   ChangedMealDeliveryStatus,
   getAllMealBoxDetails,
-  checkDelayedDelivery
-  
+  checkDelayedDelivery,
 };

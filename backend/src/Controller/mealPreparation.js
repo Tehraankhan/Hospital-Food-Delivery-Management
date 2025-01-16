@@ -3,11 +3,17 @@ const patientModel = require("../models/patientSchema");
 const mealDeliveryModal = require("../models/mealDeliverySchema");
 const alertMessageModal = require("../models/alertMessageSchema");
 
-
 const creatMeal = async (req, res) => {
   try {
     // const patientId = req.params.id;
-    const { patientId, dietChartId, mealType, status, preparedBy,preparationDeadline } = req.body;
+    const {
+      patientId,
+      dietChartId,
+      mealType,
+      status,
+      preparedBy,
+      preparationDeadline,
+    } = req.body;
 
     const MealPreparation = new mealModal({
       patientId: patientId,
@@ -15,7 +21,7 @@ const creatMeal = async (req, res) => {
       mealType: mealType,
       status: status,
       preparedBy: preparedBy,
-      preparationDeadline:preparationDeadline
+      preparationDeadline: preparationDeadline,
     });
 
     await MealPreparation.save();
@@ -80,27 +86,29 @@ const ChangedMealPreparationStatus = async (req, res) => {
   }
 };
 
-
-
 const checkDelayedItems = async (io) => {
   try {
     const testTimeMeals = "08:10"; // Fixed time for meal preparations
     const testTimeDelivery = "10:00"; // Fixed time for meal deliveries
-    console.log(`Testing with meal preparation time: ${testTimeMeals} and delivery time: ${testTimeDelivery}`);
+
 
     const alertMessages = []; // To store all alert messages
 
     // Check for delayed meal preparations
-    const delayedPreparations = await mealModal.find({
-      preparationDeadline: { $lt: testTimeMeals },
-      status: { $ne: "Completed" },
-    }).populate("patientId");
+    const delayedPreparations = await mealModal
+      .find({
+        preparationDeadline: { $lt: testTimeMeals },
+        status: { $ne: "Completed" },
+      })
+      .populate("patientId");
 
     // Handle delayed meal preparations
     for (const preparation of delayedPreparations) {
       const message1 = `⚠️ Meal preparation for patient ${preparation.patientId.name} (Deadline: ${preparation.preparationDeadline}) is delayed. Please take immediate action!`;
 
-      let existingMessage = await alertMessageModal.findOne({ message: message1 });
+      let existingMessage = await alertMessageModal.findOne({
+        message: message1,
+      });
       if (!existingMessage) {
         existingMessage = new alertMessageModal({ message: message1 });
         await existingMessage.save();
@@ -110,10 +118,12 @@ const checkDelayedItems = async (io) => {
     }
 
     // Check for delayed meal deliveries
-    const delayedDelivery = await mealDeliveryModal.find({
-      deliveryDeadline: { $lt: testTimeDelivery },
-      deliveryStatus: { $ne: "Delivered" },
-    }).populate("patientId");
+    const delayedDelivery = await mealDeliveryModal
+      .find({
+        deliveryDeadline: { $lt: testTimeDelivery },
+        deliveryStatus: { $ne: "Delivered" },
+      })
+      .populate("patientId");
 
     // Handle delayed meal deliveries
     for (const delivery of delayedDelivery) {
@@ -124,8 +134,10 @@ const checkDelayedItems = async (io) => {
       const message2 = `⚠️ Delivery for patient ${delivery.patientId.name} (Deadline: ${delivery.deliveryDeadline}) is delayed. Please take immediate action!`;
 
       // Check if the exact message already exists before saving
-      let existingDeliveryMessage = await alertMessageModal.findOne({ message: message2 });
-      
+      let existingDeliveryMessage = await alertMessageModal.findOne({
+        message: message2,
+      });
+
       // If message doesn't exist, create a new one
       if (!existingDeliveryMessage) {
         existingDeliveryMessage = new alertMessageModal({ message: message2 });
@@ -140,59 +152,59 @@ const checkDelayedItems = async (io) => {
     if (alertMessages.length > 0) {
       io.emit("mealDelayed", alertMessages);
     }
-
   } catch (error) {
     console.error("Error checking for delayed items:", error);
   }
 };
-
-
-
 
 let previousPendingDeliveriesCount = null;
 let previousPendingPreparationsCount = null;
 
 const getPendingCounts = async (io) => {
   try {
-
     // 1. Count pending meal deliveries
-    const currentPendingDeliveriesCount = await mealDeliveryModal.countDocuments({
-      deliveryStatus: "Pending",
-    });
+    const currentPendingDeliveriesCount =
+      await mealDeliveryModal.countDocuments({
+        deliveryStatus: "Pending",
+      });
 
     // 2. Count pending meal preparations
     const currentPendingPreparationsCount = await mealModal.countDocuments({
       status: "Pending",
     });
+    io.emit("updatePendingDeliveries", {
+      pendingDeliveries: currentPendingDeliveriesCount,
+    });
+    io.emit("updatePendingPreparations", {
+      pendingPreparations: currentPendingPreparationsCount,
+    });
 
     // Emit delivery count only if it has changed
-    if (currentPendingDeliveriesCount !== previousPendingDeliveriesCount) {
-      io.emit("updatePendingDeliveries", {
-        pendingDeliveries: currentPendingDeliveriesCount,
-      });
-      console.log(`Pending Deliveries Count Changed: ${currentPendingDeliveriesCount}`);
-      previousPendingDeliveriesCount = currentPendingDeliveriesCount;
-    }
+    // if (currentPendingDeliveriesCount !== previousPendingDeliveriesCount) {
+    //   io.emit("updatePendingDeliveries", {
+    //     pendingDeliveries: currentPendingDeliveriesCount,
+    //   });
+    //   console.log(`Pending Deliveries Count Changed: ${currentPendingDeliveriesCount}`);
+    //   previousPendingDeliveriesCount = currentPendingDeliveriesCount;
+    // }
 
     // Emit preparation count only if it has changed
-    if (currentPendingPreparationsCount !== previousPendingPreparationsCount) {
-      io.emit("updatePendingPreparations", {
-        pendingPreparations: currentPendingPreparationsCount,
-      });
-      console.log(`Pending Preparations Count Changed: ${currentPendingPreparationsCount}`);
-      previousPendingPreparationsCount = currentPendingPreparationsCount;
-    }
-
-    
-
-    
+    // if (currentPendingPreparationsCount !== previousPendingPreparationsCount) {
+    //   io.emit("updatePendingPreparations", {
+    //     pendingPreparations: currentPendingPreparationsCount,
+    //   });
+    //   console.log(`Pending Preparations Count Changed: ${currentPendingPreparationsCount}`);
+    //   previousPendingPreparationsCount = currentPendingPreparationsCount;
+    // }
   } catch (error) {
     console.error("Error during pending counts or delayed meals check:", error);
   }
 };
 
-
-
-
-
-    module.exports = { creatMeal, getMealData, ChangedMealPreparationStatus,checkDelayedItems,getPendingCounts };
+module.exports = {
+  creatMeal,
+  getMealData,
+  ChangedMealPreparationStatus,
+  checkDelayedItems,
+  getPendingCounts,
+};
