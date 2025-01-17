@@ -19,7 +19,7 @@ import AlertCard from "../Components/AlertCard";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
+const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
 
 export default function StatusCard() {
   const [pendingDeliveries, setPendingDeliveries] = useState(0);

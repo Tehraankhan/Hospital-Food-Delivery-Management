@@ -36,7 +36,7 @@ import { io } from "socket.io-client";
 import AlertCard from "../../Components/AlertCard";
 import StatusCard from "../../Components/StatusCard";
 
-const socket = io("https://hospital-food-delivery-management-backhttps://hospital-food-delivery-management-backend-rf3c.onrender.com");
+const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
 export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isPatientModalOpen, setPatientModalOpen] = useState(false);
