@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // State for loading
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const Input = (e) => {
@@ -20,7 +20,7 @@ export default function Signin() {
   const url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com";
 
   const fetchData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const response = await axios.post(
         `${url}/user/signin`,
@@ -44,7 +44,7 @@ export default function Signin() {
     } catch (error) {
       console.error("Error:", error.response?.data?.message || error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -59,6 +59,36 @@ export default function Signin() {
         minHeight: "100vh",
       }}
     >
+      {/* Credentials Box */}
+      <Box
+        sx={{
+          width: "66%",
+          backgroundColor: "#f5f5f5", // Light background color
+          padding: 2,
+          boxShadow: 2,
+          borderRadius: 2,
+          marginBottom: 5,
+          border: "2px solid #002F31"
+        }}
+      >
+        <Typography variant="h6" align="center" gutterBottom>
+          Use the following credentials to sign in:
+        </Typography>
+        <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
+          <strong>Email:</strong> hospital_manager@xyz.com
+        </Typography>
+        <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
+          <strong>Email:</strong> hospital_pantry@xyz.com
+        </Typography>
+        <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
+          <strong>Email:</strong> hospital_delivery@xyz.com
+        </Typography>
+        <Typography variant="body2">
+          <strong>Password:</strong> Password@202
+        </Typography>
+      </Box>
+
+      {/* Sign In Form */}
       <Box
         sx={{
           width: "100%",
@@ -97,7 +127,7 @@ export default function Signin() {
           color="primary"
           fullWidth
           sx={{ marginTop: 2 }}
-          disabled={loading} // Disable button while loading
+          disabled={loading}
         >
           {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Sign In"}
         </Button>
