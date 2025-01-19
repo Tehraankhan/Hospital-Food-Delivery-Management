@@ -55,7 +55,7 @@ mongoose
     server.listen(5000, () => {
       console.log("Server started at port 5000");
     });
-    // cron.init(io);
+    cron.init(io);
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
