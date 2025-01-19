@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BaseUrl = "http://localhost:5000";
-const BaseUrl = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/"
+const BaseUrl = "https://hospital-food-delivery-management-backend-rf3c.onrender.com"
 export const fetchAllPatient = (token) =>
   axios.get(`${BaseUrl}/patient/getAllPatient`, {
     headers: {
