@@ -30,10 +30,10 @@ import MealAssignTable from "../../Components/MealAssignTable";
 import DeliveryPersonnalTable from "../../Components/DeliveryPersonnalTable";
 import AlertCard from "../../Components/AlertCard";
 import StatusCard from "../../Components/StatusCard";
-
+import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
 
-const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
+// const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
 
 
 export default function PantryDashboard() {
@@ -47,7 +47,9 @@ export default function PantryDashboard() {
   const [pendingDeliveries, setPendingDeliveries] = useState(0);
   const [pendingPreparations, setPendingPreparations] = useState(0);
   const [delayedMessages, setDelayedMessages] = useState("");
-
+  const dispatch = useDispatch();
+  const loading2 = useSelector((state)=>state.userData.fetchAllPatientLoading)
+console.log(loading2)
   const handleTabClick = (label) => {
     setCurrentTab(label);
   };
@@ -55,9 +57,7 @@ export default function PantryDashboard() {
     if (currentTab === "Assign meal Box") {
       try {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-        console.log("Data being sent:", data); // Log data for debugging
-        console.log("Token:", token); // Log token for debugging
-
+        console.log("Data being sent:", data); // Log data for debhttps://hospital-food-delivery-management-backend-rf3c.onrender.com/
         const response = await axios.post(
           "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/addMealDelivery", // Ensure this URL is correct
           data,
@@ -94,22 +94,6 @@ export default function PantryDashboard() {
       } catch (error) {
         console.error("Error fetching patient data:", error);
       }
-    } else if (currentTab === "Changed Delivery Status") {
-      try {
-        // const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-        // const response = await axios.post(
-        //   "http://localhost:5000/staff/add-staff",
-        //   data,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`, // Authorization header
-        //     },
-        //   }
-        // );
-        // console.log("Patient Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching patient data:", error);
-      }
     } else if (currentTab === "Meal Preparation") {
       try {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
@@ -131,28 +115,28 @@ export default function PantryDashboard() {
     await fetchData();
   };
 
-  useEffect(() => {
-    socket.on("updatePendingDeliveries", (data) => {
+  // useEffect(() => {
+  //   socket.on("updatePendingDeliveries", (data) => {
       
-      setPendingDeliveries(data.pendingDeliveries);
-    });
+  //     setPendingDeliveries(data.pendingDeliveries);
+  //   });
 
-    socket.on("updatePendingPreparations", (data) => {
+  //   socket.on("updatePendingPreparations", (data) => {
      
-      setPendingPreparations(data.pendingPreparations);
-    });
+  //     setPendingPreparations(data.pendingPreparations);
+  //   });
 
-    socket.on("mealDelayed", (message) => {
-      // console.log("Received mealDelayed event:", message);
-      // console.log("yes",message)
-      setDelayedMessages(message);
-      // alert(`Test alert: ${message}`);
-    });
+  //   socket.on("mealDelayed", (message) => {
+  //     // console.log("Received mealDelayed event:", message);
+  //     // console.log("yes",message)
+  //     setDelayedMessages(message);
+  //     // alert(`Test alert: ${message}`);
+  //   });
 
-    return () => {
-      socket.off("mealDelayed");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("mealDelayed");
+  //   };
+  // }, []);
 
   const fetchData = async () => {
     setLoading(true); // Start loading

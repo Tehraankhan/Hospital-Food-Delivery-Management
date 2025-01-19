@@ -13,9 +13,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PatientForm from "../../src/pages/FoodManagementDashboard/PatientForm";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-const PatientTable = ({ data ,fetchData}) => {
-  const [data1, setData] = useState(Array.isArray(data) ? data : []);
+const PatientTable = ({ data, fetchData }) => {
+  const [data1, setData] = useState(
+    useSelector((state) => state.userData.fetchAllPatient)
+    
+  );
   const [selectedData, setSelectedData] = useState(data);
   const [selectedId, setSelectedId] = useState("");
   const columns = [
@@ -35,7 +39,7 @@ const PatientTable = ({ data ,fetchData}) => {
   const [isPatientModalOpen, setPatientModalOpen] = useState(false);
   const handleEdit = async (data) => {
     try {
-      console.log(selectedId,selectedData)
+      console.log(selectedId, selectedData);
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.put(
@@ -51,12 +55,11 @@ const PatientTable = ({ data ,fetchData}) => {
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
-    await fetchData()
+    await fetchData();
   };
 
   const handleDelete = async (id) => {
     try {
-
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
       const response = await axios.delete(
@@ -67,11 +70,10 @@ const PatientTable = ({ data ,fetchData}) => {
           },
         }
       );
-    
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
-    await fetchData()
+    await fetchData();
   };
 
   return (

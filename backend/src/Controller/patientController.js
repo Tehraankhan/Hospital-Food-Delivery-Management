@@ -34,7 +34,7 @@ const getAllPatient = async (req, res) => {
 
 const getPatientID = async (req,res)=>{
   try {
-    const patients = await patientModel.find({}, { _id: 1, name: 1 });;
+    const patients = await patientModel.find({}, { _id: -1, name: 1 });
     console.log(patients)
     res.status(201).json(patients);
   } catch (error) {

@@ -13,9 +13,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DietChartFormModal from "../pages/FoodManagementDashboard/DietChartForm";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const DietChartTable = ({ dietCharts,fetchData }) => {
-  const [data, setData] = useState(Array.isArray(dietCharts) ? dietCharts : []);
+  const [data, setData] = useState(useSelector((state)=>state.userData.fetchAllDietChart));
   const [selectedData, setSelectedData] = useState(data);
   const [selectedId, setSelectedId] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);

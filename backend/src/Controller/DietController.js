@@ -31,6 +31,7 @@ const creatDietChart = async (req, res) => {
 const getDietChart = async (req, res) => {
   try {
     const dietCharts = await patientDietChart.find();
+    console.log(dietCharts)
     res
       .status(200)
       .json(dietCharts);

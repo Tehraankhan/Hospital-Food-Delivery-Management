@@ -15,9 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const MealPreparationTable = ({ data, editstatus }) => {
-  const [updatedData, setUpdatedData] = useState(Array.isArray(data) ? data : []);
+  const [updatedData, setUpdatedData] = useState(useSelector((state)=>state.userData.fetchAllMealPreparartion));
   const [selectedMeal, setSelectedMeal] = useState(null); // State for selected meal details
   const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
 

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSelector } from "react-redux";
 
 const PantryTable = ({ data }) => {
-  const [data1,setData]=useState(Array.isArray(data) ? data : [])
+  const [data1,setData]=useState(useSelector((state)=>state.userData.fetchAllStaff))
 
   const columns = [
     { label: "staff Name", field: "staffName", align: "center" },

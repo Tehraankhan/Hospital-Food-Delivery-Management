@@ -35,9 +35,13 @@ import DeliveryTable from "../../Components/DeliveryTable";
 import { io } from "socket.io-client";
 import AlertCard from "../../Components/AlertCard";
 import StatusCard from "../../Components/StatusCard";
+import { useSelector, useDispatch } from 'react-redux';
 
-const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
+
+
+// const socket = io("https://hospital-food-delivery-management-backend-rf3c.onrender.com");
 export default function Dashboard() {
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [isPatientModalOpen, setPatientModalOpen] = useState(false);
   const [isStaffModalOpen, setStaffModalOpen] = useState(false);
@@ -49,7 +53,8 @@ export default function Dashboard() {
   const [pendingDeliveries, setPendingDeliveries] = useState(0);
   const [pendingPreparations, setPendingPreparations] = useState(0);
   const [delayedMessages, setDelayedMessages] = useState("");
-
+  const dispatch = useDispatch();
+ const loading2 = useSelector((state)=>state.userData.Loading)
   const handleTabClick = (label) => {
     setCurrentTab(label);
   };
@@ -63,19 +68,20 @@ export default function Dashboard() {
       let url = "";
       switch (currentTab) {
         case "Patients":
-          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/getAllPatient";
+        dispatch({type:"fetchAllPatient"})
+         console.log(loading2)
           break;
         case "Diet Chart":
-          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/";
+        dispatch({type:"fetchAllDietChart"})
           break;
         case "Add Staff":
-          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/staff/getDetails";
+          dispatch({type:"fetchAllStaff"})
           break;
         case "Meal Preparation":
-          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/getData";
+          dispatch({type:"fetchAllMealPreparation"})
           break;
         case "Delivery Status":
-          url = "https://hospital-food-delivery-management-backend-rf3c.onrender.com/Delivery/getData";
+          dispatch({type:"fetchAllDeliveryDetails"})
           break;
         default:
           break;
@@ -85,6 +91,8 @@ export default function Dashboard() {
         const response = await axios.get(url, { headers });
         console.log(`${currentTab} Data:`, response.data);
         setData(response.data);
+        
+       
       }
     } catch (error) {
       console.error(`Error fetching ${currentTab} data:`, error);
@@ -121,98 +129,40 @@ export default function Dashboard() {
     setLoading(true);
 
     if (currentTab === "Patients") {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+      dispatch({type:"AddPatient",payload:data})
 
-        const response = await axios.post(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/add-details",
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-          }
-        );
-        console.log("Patient Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching patient data:", error);
-      }
     } else if (currentTab === "Diet Chart") {
-      try {
-        console.log("yes");
-        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
-        const response = await axios.post(
-          `https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/DietChart/addDiet/${id}`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-          }
-        );
-        console.log("Patient Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching patient data:", error);
-      }
+      dispatch({type:"AddDietChart",payload:{data,id}})
     } else if (currentTab === "Add Staff") {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-
-        const response = await axios.post(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/staff/add-staff",
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-          }
-        );
-
-        console.log("Patient Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching patient data:", error);
-      }
+      dispatch({type:"AddStaff",payload:data})
+     
     } else if (currentTab === "Meal Preparation") {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-
-        const response = await axios.post(
-          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/mealpreparation/addMeal",
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Authorization header
-            },
-          }
-        );
-        console.log("Meal Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching patient data:", error);
-      }
+      dispatch({type:"AddMealPreparation",payload:data})
+      
     }
     await fetchData();
     setLoading(false);
   };
 
-  useEffect(() => {
-    socket.on("updatePendingDeliveries", (data) => {
-      console.log("Updated Pending Deliveries:", data.pendingDeliveries);
-      setPendingDeliveries(data.pendingDeliveries);
-    });
+  // useEffect(() => {
+  //   socket.on("updatePendingDeliveries", (data) => {
+  //     console.log("Updated Pending Deliveries:", data.pendingDeliveries);
+  //     setPendingDeliveries(data.pendingDeliveries);
+  //   });
 
-    socket.on("updatePendingPreparations", (data) => {
-      console.log("Updated Pending Preparations:", data.pendingPreparations);
-      setPendingPreparations(data.pendingPreparations);
-    });
-    socket.on("mealDelayed", (message) => {
-      setDelayedMessages(message)
-    });
+  //   socket.on("updatePendingPreparations", (data) => {
+  //     console.log("Updated Pending Preparations:", data.pendingPreparations);
+  //     setPendingPreparations(data.pendingPreparations);
+  //   });
+  //   socket.on("mealDelayed", (message) => {
+  //     setDelayedMessages(message)
+  //   });
 
-    return () => {
-      socket.off("mealDelayed");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("mealDelayed");
+  //   };
+  // }, []);
 
   return (
     <>
@@ -279,7 +229,7 @@ export default function Dashboard() {
         </Grid>
 
         {/* Display loading spinner or content */}
-        {loading ? (
+        {loading2 ? (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
             <CircularProgress />
           </Box>

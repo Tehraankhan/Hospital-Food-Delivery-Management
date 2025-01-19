@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,11 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
-const DeliveryTable = ({ data }) => {
+const DeliveryTable = () => {
   // Table column headers
+  const [data,setData]=useState(useSelector((state)=>state.userData.fetchAllDeliveryDetails))
   const columns = [
     { label: "Patient ID", field: "patientId", align: "center" },
     { label: "Patient Name", field: "patientName", align: "center" },

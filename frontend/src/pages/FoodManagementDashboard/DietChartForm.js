@@ -16,7 +16,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import axios from "axios";
 
-const DietChartFormModal = ({ open, onClose, onSubmit, dietChartData}) => {
+const DietChartFormModal = ({ open, onClose, onSubmit, dietChartData }) => {
   const [formData, setFormData] = useState({
     patientId: "",
     patientName: "",
@@ -45,19 +45,22 @@ const DietChartFormModal = ({ open, onClose, onSubmit, dietChartData}) => {
     const fetchPatients = async () => {
       try {
         const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-        const response = await axios.get("https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/getPatientID", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+
+        const response = await axios.get(
+          "https://hospital-food-delivery-management-backend-rf3c.onrender.com/patient/getPatientID",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         setPatients(response.data); // Store the list of patients
+        console.log(patients)
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
     };
     fetchPatients();
   }, [open]);
-
-
 
   const handleInputChange = (e, mealType, field) => {
     const { value } = e.target;
@@ -111,30 +114,30 @@ const DietChartFormModal = ({ open, onClose, onSubmit, dietChartData}) => {
 
   const handlePatientIdChange = (e) => {
     const selectedPatientId = e.target.value;
-    setSelectedPatientId(selectedPatientId); // Update selected patient ID
-    setFormData((prev) => ({
-      ...prev,
-      patientId: selectedPatientId,
-    }));
-
-    // Find the selected patient's name directly from the patients array
+    setSelectedPatientId(selectedPatientId);
+  
     const selectedPatient = patients.find(
-      (patient) => patient._id === selectedPatientId
+      (patient) => String(patient._id) === selectedPatientId
     );
-
     if (selectedPatient) {
       setFormData((prev) => ({
         ...prev,
-        patientName: selectedPatient.name, // Set the patient's name
+        patientId: selectedPatientId,
+        patientName: selectedPatient.name,
       }));
     } else {
-      console.error("Patient not found");
+      setFormData((prev) => ({
+        ...prev,
+        patientId: selectedPatientId,
+        patientName: "", // Reset if no match is found
+      }));
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData,selectedPatientId);
+    onSubmit(formData, selectedPatientId);
     onClose(); // Close the modal after submission
   };
   useEffect(() => {
