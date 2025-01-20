@@ -84,7 +84,7 @@ export default function Signin() {
           <strong>Email:</strong> hospital_delivery@xyz.com
         </Typography>
         <Typography variant="body2">
-          <strong>Password:</strong> Password@202
+          <strong>Password:</strong> Password@2025
         </Typography>
       </Box>
 
